@@ -14,7 +14,8 @@ public class MainSitePage extends Page<MainSitePage> {
 
     private static final By ALL_CATEGORIES_LINK = By.xpath("//*[contains(@id,'page_main')]//a[@id and @title]");
 
-    public MainSitePage() {
+    public MainSitePage(WebDriver driver) {
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 

@@ -1,7 +1,10 @@
 package addToMemo.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class OneItemPage extends Page<OneItemPage> {
 
@@ -11,6 +14,11 @@ public class OneItemPage extends Page<OneItemPage> {
     private static final By ACCEPT_ALERT_BTN = By.xpath("//*[@id='alert_ok']");
     private static final By ITEM_TITLE = By.id("msg_div_msg");
     public static String chosenItemPageUrl = "";
+
+    public OneItemPage(WebDriver driver) {
+        super(driver);
+        PageFactory.initElements(driver, this);
+    }
 
     public OneItemPage addToMemo() {
         driver.findElement(ADD_TO_MEMO_BTN).click();

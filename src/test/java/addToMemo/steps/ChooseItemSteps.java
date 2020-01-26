@@ -1,64 +1,59 @@
 package addToMemo.steps;
 
-import addToMemo.pages.ItemPage;
-import addToMemo.pages.MainSitePage;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
 public class ChooseItemSteps extends BaseSteps {
 
-    public static MainSitePage mainSitePage = new MainSitePage();
-    public static ItemPage itemPage = new ItemPage();
+    public ChooseItemSteps(WebDriver driver) {
+        super(driver);
+    }
 
-    @Given("^I am on the category page$")
-    public void i_am_on_the_category_page(){
+    public void goToCategoryPage(){
         mainSitePage
                 .open()
                 .open(chooseRandomCategory());
     }
 
-    @When("^I choose random item page$")
-    public void i_choose_random_item_page(){
+    public void goToAdditionalCategoryPage(){
+        applePhonesPage.open();
+    }
+
+    public void goToRandomPageWithItems(){
         chooseRandomPageWithItem();
     }
 
-    @When("^I choose random item from first item page$")
-    public void i_choose_random_item_from_first_item_item_page(){
+    public void chooseRandomItemFromFirstPageWithItems(){
         openRandomItem();
     }
 
-    //TODO divide into functions
-    @When("^I choose \"(.*)\" random items from first item page$")
-    public void i_choose_few_random_items_from_first_item_page(String query) {
+    public String chooseFewRandomItemsFromOneCategoryFromFirstItemPage(String counter) {
         List<WebElement> allItems = itemPage.getAllItems();
-        Integer count = Integer.parseInt(query);
+        Integer count = Integer.parseInt(counter);
         if (allItems.size() > count) {
-            while(count > 0) {
-                int randomInt = (int) ((allItems.size() - 1) * Math.random()) + 1;
-                itemPage.setCheckboxToItem(String.valueOf(randomInt));
+            while (count > 0) {
+                itemPage.setCheckboxToItem(String.valueOf(count));
                 count = count - 1;
             }
+            return counter;
         } else {
-            //TODO
-            System.out.println("contains less items");
-        //    chooseRandomPageWithItem();
+            logger.info("Contains less items than needed. Needed " + counter);
+            count = allItems.size();
+            while (count > 0) {
+                itemPage.setCheckboxToItem(String.valueOf(count));
+                count = count - 1;
+            }
+            return String.valueOf(allItems.size());
         }
     }
 
-    @When("^I choose random item from last item page$")
-    public void i_choose_random_item_from_last_item_item_page(){
-        //TODO use isItemPageContainsMoreThanOnePage()
-    }
-
-    public String chooseRandomPageWithItem() {
+    private void chooseRandomPageWithItem() {
         while (!itemPage.isPageContainsItemList()) {
             String categoryPage = chooseRandomCategory();
             mainSitePage.open(categoryPage);
         }
-        return "";
     }
 
     private String chooseRandomCategory(){
@@ -70,12 +65,11 @@ public class ChooseItemSteps extends BaseSteps {
         } else {
             throw new RuntimeException("No categories on page");
         }
-        //TODO info should be logged,
-        System.out.println(choosenCategory);
+        logger.info(choosenCategory);
         return choosenCategory;
     }
 
-    public WebElement chooseRandomItemFromFirstItemPage() {
+    private WebElement chooseRandomItemFromFirstItemPage() {
         List<WebElement> allItems = itemPage.getAllItems();
         WebElement choosenItem;
         if (allItems.size() > 0) {
@@ -84,15 +78,13 @@ public class ChooseItemSteps extends BaseSteps {
         } else {
             throw new RuntimeException("No items on page");
         }
-        //TODO info should be logged,
-        System.out.println(choosenItem);
+        logger.info(choosenItem.toString());
         return choosenItem;
     }
 
-    public void openRandomItem() {
+    private void openRandomItem() {
         WebElement ItemPage = chooseRandomItemFromFirstItemPage();
         ItemPage.click();
-        //TODO info should be logged,
-        System.out.println(itemPage.getCurrentItemPageUrl());
+        logger.info("I opened random item. My item is " + itemPage.getCurrentItemPageUrl());
     }
 }
