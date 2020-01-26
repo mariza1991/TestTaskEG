@@ -16,6 +16,8 @@ public class ItemPage extends Page<ItemPage>{
 
     private static final By PREVIOUS_PAGE = By.xpath("//*[@name='nav_id' and @rel='prev']");
 
+    private static final By ADD_SELECTED_TO_MEMO_LINK = By.xpath("//*[@id='a_fav_sel']");
+
     public ItemPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -27,6 +29,11 @@ public class ItemPage extends Page<ItemPage>{
 
     public List<WebElement> getAllItems(){
         return driver.findElements(By.xpath(ALL_ITEMS));
+    }
+
+    public void addToMemoSelectedItems() {
+        wait.until(ExpectedConditions.elementToBeClickable(ADD_SELECTED_TO_MEMO_LINK));
+        driver.findElement(ADD_SELECTED_TO_MEMO_LINK).click();
     }
 
     public WebElement getOneItems(String number){

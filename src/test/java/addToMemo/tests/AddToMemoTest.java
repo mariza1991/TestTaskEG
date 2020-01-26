@@ -31,7 +31,7 @@ public class AddToMemoTest extends BaseTest {
 
         logger.info("Was added " + addedItemsAmount + " items");
         AddToMemoSteps addToMemoSteps = new AddToMemoSteps(driver);
-        addToMemoSteps.addSelectedItemsToMemo();
+        addToMemoSteps.addSelectedItemsToMemoFromShowSelectedPage();
         addToMemoSteps.counterInHeaderIs(addedItemsAmount);
         addToMemoSteps.goToMemoFromMenu();
         addToMemoSteps.theMemoPageContainsChosenItems();

@@ -36,6 +36,15 @@ public class AddToMemoSteps extends BaseSteps {
         }
     }
 
+    public void addSelectedItemsToMemoFromShowSelectedPage() {
+        itemPage.addToMemoSelectedItems();
+        if(oneItemPage.isAddAlertAppeared()) {
+            logger.info("Alert appeared");
+            oneItemPage.acceptAlert();
+        }
+        showSelectedPage.setSelectedItemsMarkedWithCheckbox();
+    }
+
     public void goToMemoFromMenu(){
         memoPage.goToMemoFromMenu();
     }

@@ -17,6 +17,7 @@ public class ShowSelectedPage extends Page<ShowSelectedPage>{
     private static final By ALL_SELECTED_ITEMS = By.xpath("//*[contains(@id,'tr_')]//td[@class='msg2']//a");
     private static final String SELECTED_ITEM = "//*[contains(@id,'tr_')]";
     private static final String TABLE_WITH_ITEMS = "//*[@id='filter_frm']//table";
+    private static final String CHECKBOX = "//*[contains(@id,'tr_')][";
     public static List<String> selectedItemsUrls = new ArrayList<>();
 
     public ShowSelectedPage(WebDriver driver) {
@@ -45,6 +46,22 @@ public class ShowSelectedPage extends Page<ShowSelectedPage>{
 
         for (int i = 1; i < selectedItems.size() + 1; i++) {
             selectedItemsUrls.add(driver.findElement(By.xpath(SELECTED_ITEM + "[" + i + "]//td[@class='msg2']//a")).getAttribute("href"));
+        }
+
+        logger.info("Number of selected items set to " + selectedItemsUrls.size());
+        for (String list : selectedItemsUrls) {
+            logger.info(list);
+        }
+    }
+
+    public void setSelectedItemsMarkedWithCheckbox(){
+        List<WebElement> selectedItems = driver.findElements(ALL_SELECTED_ITEMS);
+        wait.until(ExpectedConditions.visibilityOfAllElements(selectedItems));
+
+        for (int i = 1; i < selectedItems.size() + 1; i++) {
+            if (driver.findElement(By.xpath(CHECKBOX + i + "]//input")).isSelected()) {
+                selectedItemsUrls.add(driver.findElement(By.xpath(SELECTED_ITEM + "[" + i + "]//td[@class='msg2']//a")).getAttribute("href"));
+            }
         }
 
         logger.info("Number of selected items set to " + selectedItemsUrls.size());
